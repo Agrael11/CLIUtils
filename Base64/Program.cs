@@ -8,7 +8,7 @@ namespace Base64
         static void Main(string[] args)
         {
             RegisterArg();
-
+            
             try
             {
                 Arguments.ParseArguments(args);
@@ -105,6 +105,10 @@ namespace Base64
             {
                 try
                 {
+                    if (file)
+                    {
+                        input = File.ReadAllText(input);
+                    }
                     var output = Decode(input);
                     if (Arguments.IsArgumentSet("outputfile"))
                     {
