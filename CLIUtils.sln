@@ -5,6 +5,8 @@ VisualStudioVersion = 17.13.35806.99
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base64", "Base64\Base64.csproj", "{2403DAB7-1CFA-480E-AA80-C3A84A3A6E0C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLI-Helper", "CLI-Helper\CLI-Helper\CLI-Helper.csproj", "{D03E4108-822F-D8D4-6FD6-338025AB1D92}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2403DAB7-1CFA-480E-AA80-C3A84A3A6E0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2403DAB7-1CFA-480E-AA80-C3A84A3A6E0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2403DAB7-1CFA-480E-AA80-C3A84A3A6E0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D03E4108-822F-D8D4-6FD6-338025AB1D92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D03E4108-822F-D8D4-6FD6-338025AB1D92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D03E4108-822F-D8D4-6FD6-338025AB1D92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D03E4108-822F-D8D4-6FD6-338025AB1D92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
