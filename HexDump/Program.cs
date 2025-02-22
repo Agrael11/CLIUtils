@@ -54,7 +54,15 @@ namespace HexDump
             }
             else
             {
-                input = Console.ReadLine() ?? "";
+                if (Console.IsInputRedirected || (bool)Arguments.IsArgumentSet("multiline"))
+                {
+                    input = ConsoleExtras.ReadLinesUntilEOF(!Console.IsInputRedirected);
+                }
+                else
+                {
+                    Console.Write("Input> ");
+                    input = Console.ReadLine() ?? "";
+                }
             }
 
             var view = ViewType.InvalidView;
@@ -147,6 +155,7 @@ namespace HexDump
             Arguments.RegisterArgument("asciionly", new ArgumentDefinition(ArgumentType.Flag, "ascii", "a", "Show only ASCII characters (Not usable with reverse)"));
             Arguments.RegisterArgument("hexonly", new ArgumentDefinition(ArgumentType.Flag, "hex", "x", "Show only Hex result"));
             Arguments.RegisterArgument("fromhex", new ArgumentDefinition(ArgumentType.Flag, "reverse", "r", "Reverse the operation"));
+            Arguments.RegisterArgument("multiline", new ArgumentDefinition(ArgumentType.Flag, "multiline", "m", "Allow Multiline input when input is not specifed as parameter")); 
             Arguments.RegisterArgument("input", new ArgumentDefinition(ArgumentType.String, "input", "i", "String to encode or decode", "Input Text"));
             Arguments.RegisterArgument("inputfile", new ArgumentDefinition(ArgumentType.String, "inputfile", "if", "Selects input file (cannot be used with -i)", "File Name"));
             Arguments.RegisterArgument("outputfile", new ArgumentDefinition(ArgumentType.String, "outputfile", "of", "Selects Output File", "File Name"));
