@@ -67,7 +67,6 @@ namespace Base64
             }
             else
             {
-                Console.Write("Input> ");
                 input = Console.ReadLine()??"";
             }
 
@@ -121,7 +120,7 @@ namespace Base64
                 }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine(ex.Message);
+                    Console.Error.WriteLine(ex.Message + "(" + input +")");
                 }
             }
         }
