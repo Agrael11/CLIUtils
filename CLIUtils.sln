@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLI-Helper", "CLI-Helper\CL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexDump", "HexDump\HexDump.csproj", "{F2DA19BC-9CD4-4F76-BBB0-ED8C2B7F82F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "URLUtil", "URLUtil\URLUtil.csproj", "{7642D30D-6B87-449B-B4A5-31540B183775}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F2DA19BC-9CD4-4F76-BBB0-ED8C2B7F82F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2DA19BC-9CD4-4F76-BBB0-ED8C2B7F82F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2DA19BC-9CD4-4F76-BBB0-ED8C2B7F82F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7642D30D-6B87-449B-B4A5-31540B183775}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7642D30D-6B87-449B-B4A5-31540B183775}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7642D30D-6B87-449B-B4A5-31540B183775}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7642D30D-6B87-449B-B4A5-31540B183775}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
