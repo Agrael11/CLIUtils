@@ -1,8 +1,5 @@
 ﻿using CLIHelper;
-using System.Runtime.CompilerServices;
 using System.Text;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Web;
 
 namespace URLUtil
 {
@@ -10,6 +7,9 @@ namespace URLUtil
     {
         static public void Main(string[] args)
         {
+            var tmp1 = "https://www.google.com/search?q=it's secret to efveroyne&oq=it's secret to efveroyne&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQLhhA0gEIMjE5MmowajGoAgCwAgA&sourceid=chrome&ie=UTF-8#fpr=r";
+            var tmp2 = "https://www.google.com/search?q=it%27s+secret+to+efveroyne&oq=it%27s+secret+to+efveroyne&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQLhhA0gEIMjE5MmowajGoAgCwAgA&sourceid=chrome&ie=UTF-8#fpr=r";
+            args = ["-x", "-i", tmp2];
             RegisterArg();
 
             try
@@ -205,10 +205,12 @@ namespace URLUtil
             var scheme = uri.Scheme;
             var host = uri.Host;
             var port = uri.Port;
-            var query = HttpUtility.ParseQueryString(uri.Query);
+            var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
             builder.AppendLine($"Scheme: {scheme}");
             builder.AppendLine($"Host: {host}");
             builder.AppendLine($"Port: {port}");
+            builder.AppendLine($"Path: {uri.AbsolutePath}");
+            builder.AppendLine($"Fragment: {uri.Fragment}");
             builder.AppendLine($"Queries:");
             foreach (var key in query.Keys)
             {
@@ -238,7 +240,7 @@ namespace URLUtil
         static void RegisterArg()
         {
             Config.FullName = "URLUtiil";
-            Config.Version = "0.4.0";
+            Config.Version = "0.5.0";
             Config.License = "Copyright (C) 2025 Oliver Neuschl\r\nThis software uses GPL 3.0 License";
             Config.HelpHeader = "URL Encoder/Decoder";
             Config.ErrorOnUnkownArguments = false;
