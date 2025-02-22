@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexDump", "HexDump\HexDump.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "URLUtil", "URLUtil\URLUtil.csproj", "{7642D30D-6B87-449B-B4A5-31540B183775}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLIUtils", "CLIUtils\CLIUtils.csproj", "{80849C73-E100-4EF5-A639-B66BA4F82110}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{7642D30D-6B87-449B-B4A5-31540B183775}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7642D30D-6B87-449B-B4A5-31540B183775}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7642D30D-6B87-449B-B4A5-31540B183775}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80849C73-E100-4EF5-A639-B66BA4F82110}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80849C73-E100-4EF5-A639-B66BA4F82110}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80849C73-E100-4EF5-A639-B66BA4F82110}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80849C73-E100-4EF5-A639-B66BA4F82110}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
