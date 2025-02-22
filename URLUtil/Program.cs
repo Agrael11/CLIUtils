@@ -6,8 +6,8 @@ namespace URLUtil
 {
     public class Program
     {
-        private static readonly JsonSerializerOptions options1 = new() { WriteIndented = true };
-        private static readonly JsonSerializerOptions options2 = new() { WriteIndented = false };
+        private static readonly JsonSerializerOptions options1 = new() { WriteIndented = true, TypeInfoResolver = UriInfoJsonContext.Default };
+        private static readonly JsonSerializerOptions options2 = new() { WriteIndented = false, TypeInfoResolver = UriInfoJsonContext.Default };
         static public void Main(string[] args)
         {
             RegisterArg();
@@ -259,7 +259,14 @@ namespace URLUtil
                         info.Queries.Add(keyStr, value);
                     }
                 }
-                return System.Text.Json.JsonSerializer.Serialize(info, ((json == 1) ? options1 : options2));
+                if (json == 1)
+                {
+                    return JsonSerializer.Serialize(info, options1);
+                }
+                else
+                {
+                    return JsonSerializer.Serialize(info, options2);
+                }
             }
         }
 
@@ -276,7 +283,7 @@ namespace URLUtil
         static void RegisterArg()
         {
             Config.FullName = "URLUtiil";
-            Config.Version = "0.5.0";
+            Config.Version = "0.5.1";
             Config.License = "Copyright (C) 2025 Oliver Neuschl\r\nThis software uses GPL 3.0 License";
             Config.HelpHeader = "URL Encoder/Decoder";
             Config.ErrorOnUnkownArguments = false;

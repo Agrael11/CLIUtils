@@ -1,5 +1,12 @@
-﻿namespace URLUtil
+﻿using System.Text.Json.Serialization;
+
+namespace URLUtil
 {
+    [JsonSerializable(typeof(UriInfo))]
+    internal partial class UriInfoJsonContext : JsonSerializerContext 
+    {
+    }
+
     class UriInfo
     {
         public string FullUrl { get; set; } = "";
