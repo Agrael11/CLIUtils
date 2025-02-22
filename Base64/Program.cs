@@ -165,9 +165,10 @@ namespace Base64
         static void RegisterArg()
         {
             Config.FullName = "Base64";
-            Config.Version = "0.3.0";
+            Config.Version = "0.4.1";
             Config.License = "Copyright (C) 2025 Oliver Neuschl\r\nThis software uses GPL 3.0 License";
             Config.HelpHeader = "Base64 Encoder/Decoder";
+            Config.ErrorOnUnkownArguments = false;
             Arguments.RegisterArgument("encode", new ArgumentDefinition(ArgumentType.Flag, "encode", "e", "Encode the input"));
             Arguments.RegisterArgument("decode", new ArgumentDefinition(ArgumentType.Flag, "decode", "d", "Decode the input"));
             Arguments.RegisterArgument("multiline", new ArgumentDefinition(ArgumentType.Flag, "multiline", "m", "Allow Multiline input when input is not specifed as parameter"));

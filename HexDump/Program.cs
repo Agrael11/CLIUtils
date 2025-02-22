@@ -151,9 +151,10 @@ namespace HexDump
         static void RegisterArg()
         {
             Config.FullName = "HexDump";
-            Config.Version = "0.3.1";
+            Config.Version = "0.4.1";
             Config.License = "Copyright (C) 2025 Oliver Neuschl\r\nThis software uses GPL 3.0 License";
             Config.HelpHeader = "Hex Dumping Utility";
+            Config.ErrorOnUnkownArguments = false;
             Arguments.RegisterArgument("fullview", new ArgumentDefinition(ArgumentType.Flag, "full", "f", "Show full view of hex dump (Default for normal operation)"));
             Arguments.RegisterArgument("compact", new ArgumentDefinition(ArgumentType.Flag, "compact", "c", "Show compact view of hex dump"));
             Arguments.RegisterArgument("asciionly", new ArgumentDefinition(ArgumentType.Flag, "ascii", "a", "Show only ASCII characters (Not usable with reverse)"));
