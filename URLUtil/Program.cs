@@ -1,5 +1,8 @@
 ﻿using CLIHelper;
+using System.Runtime.CompilerServices;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Web;
 
 namespace URLUtil
 {
@@ -35,9 +38,9 @@ namespace URLUtil
                 Console.WriteLine(Generator.GenerateHelp());
                 return;
             }
-            if (!Arguments.IsArgumentSet("encode") && !Arguments.IsArgumentSet("decode"))
+            if (!Arguments.IsArgumentSet("encode") && !Arguments.IsArgumentSet("decode") && !Arguments.IsArgumentSet("info"))
             {
-                Console.Error.WriteLine("Either -e or -d is required");
+                Console.Error.WriteLine("Either -e, -d or -x is required");
                 Console.WriteLine(Generator.GenerateHelp());
                 return;
             }
@@ -90,14 +93,25 @@ namespace URLUtil
                 var output = Encode(inputData);
                 if (Arguments.IsArgumentSet("outputfile"))
                 {
+                    if (Arguments.IsArgumentSet("info"))
+                    {
+                        output = Encoding.UTF8.GetBytes(GetInfo(Encoding.UTF8.GetString(output)));
+                    }
                     WriteToFile(output);
                 }
                 else
                 {
-                    Console.WriteLine(Encoding.UTF8.GetString(output));
+                    if (Arguments.IsArgumentSet("info"))
+                    {
+                        Console.WriteLine(GetInfo(Encoding.UTF8.GetString(output)));
+                    }
+                    else
+                    {
+                        Console.WriteLine(Encoding.UTF8.GetString(output)); 
+                    }
                 }
             }
-            else
+            else if (Arguments.IsArgumentSet("decode"))
             {
                 try
                 {
@@ -109,11 +123,57 @@ namespace URLUtil
                     var output = Decode(inputdata);
                     if (Arguments.IsArgumentSet("outputfile"))
                     {
+                        if (Arguments.IsArgumentSet("info"))
+                        {
+                            output = Encoding.UTF8.GetBytes(GetInfo(Encoding.UTF8.GetString(output)));
+                        }
                         WriteToFile(output);
                     }
                     else
                     {
-                        Console.WriteLine(Encoding.UTF8.GetString(output));
+                        if (Arguments.IsArgumentSet("info"))
+                        {
+                            Console.WriteLine(GetInfo(Encoding.UTF8.GetString(output)));
+                        }
+                        else
+                        {
+                            Console.WriteLine(Encoding.UTF8.GetString(output)); 
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine(ex.Message + "(" + input + ")");
+                }
+            }
+            else
+            {
+                try
+                {
+                    byte[] inputdata = Encoding.UTF8.GetBytes(input);
+                    if (file)
+                    {
+                        inputdata = File.ReadAllBytes(input);
+                    }
+                    var output = inputdata;
+                    if (Arguments.IsArgumentSet("outputfile"))
+                    {
+                        if (Arguments.IsArgumentSet("info"))
+                        {
+                            output = Encoding.UTF8.GetBytes(GetInfo(Encoding.UTF8.GetString(output)));
+                        }
+                        WriteToFile(output);
+                    }
+                    else
+                    {
+                        if (Arguments.IsArgumentSet("info"))
+                        {
+                            Console.WriteLine(GetInfo(Encoding.UTF8.GetString(output)));
+                        }
+                        else
+                        {
+                            Console.WriteLine(Encoding.UTF8.GetString(output));
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -138,6 +198,33 @@ namespace URLUtil
             File.WriteAllBytes(path, data);
         }
 
+        private static string GetInfo(string address)
+        {
+            var builder = new StringBuilder();
+            var uri = new Uri(address);
+            var scheme = uri.Scheme;
+            var host = uri.Host;
+            var port = uri.Port;
+            var query = HttpUtility.ParseQueryString(uri.Query);
+            builder.AppendLine($"Scheme: {scheme}");
+            builder.AppendLine($"Host: {host}");
+            builder.AppendLine($"Port: {port}");
+            builder.AppendLine($"Queries:");
+            foreach (var key in query.Keys)
+            {
+                if (key is not string keyStr) continue;
+                if (query[keyStr] is not string value)
+                {
+                    builder.AppendLine("\t" + keyStr);
+                }
+                else
+                {
+                    builder.AppendLine($"\t{keyStr}: {value}");
+                }
+            }
+            return builder.ToString();
+        }
+
         private static byte[] Encode(byte[] data)
         {
             return System.Web.HttpUtility.UrlEncodeToBytes(data);
@@ -151,13 +238,14 @@ namespace URLUtil
         static void RegisterArg()
         {
             Config.FullName = "URLUtiil";
-            Config.Version = "0.3.1";
+            Config.Version = "0.4.0";
             Config.License = "Copyright (C) 2025 Oliver Neuschl\r\nThis software uses GPL 3.0 License";
             Config.HelpHeader = "URL Encoder/Decoder";
             Config.ErrorOnUnkownArguments = false;
             Arguments.RegisterArgument("encode", new ArgumentDefinition(ArgumentType.Flag, "encode", "e", "Encode the URL"));
             Arguments.RegisterArgument("decode", new ArgumentDefinition(ArgumentType.Flag, "decode", "d", "Decode the URL"));
             Arguments.RegisterArgument("multiline", new ArgumentDefinition(ArgumentType.Flag, "multiline", "m", "Allow Multiline input when input is not specifed as parameter"));
+            Arguments.RegisterArgument("info", new ArgumentDefinition(ArgumentType.Flag, "extract", "x", "Extracts information from URL"));
             Arguments.RegisterArgument("input", new ArgumentDefinition(ArgumentType.String, "input", "i", "String to encode or decode", "Input Text"));
             Arguments.RegisterArgument("inputfile", new ArgumentDefinition(ArgumentType.String, "inputfile", "if", "Selects input file (cannot be used with -i)", "File Name"));
             Arguments.RegisterArgument("outputfile", new ArgumentDefinition(ArgumentType.String, "outputfile", "of", "Selects Output File", "File Name"));
