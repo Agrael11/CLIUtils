@@ -54,7 +54,6 @@ namespace HexDump
             }
             else
             {
-                Console.Write("Input> ");
                 input = Console.ReadLine() ?? "";
             }
 
@@ -76,7 +75,7 @@ namespace HexDump
                 view = ViewType.HexView;
             }
 
-            if (Arguments.IsArgumentSet("reverse"))
+            if (Arguments.IsArgumentSet("fromhex"))
             {
                 try
                 {
