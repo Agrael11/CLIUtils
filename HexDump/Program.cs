@@ -48,6 +48,10 @@ namespace HexDump
             {
                 input = (string)Arguments.GetArgumentData("input");
             }
+            else if (!file && Arguments.ExtraArguments.Count != 0)
+            {
+                input = string.Join(' ', Arguments.ExtraArguments);
+            }
             else if (file)
             {
                 input = (string)Arguments.GetArgumentData("inputfile");
