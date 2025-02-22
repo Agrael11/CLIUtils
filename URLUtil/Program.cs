@@ -1,15 +1,15 @@
 ﻿using CLIHelper;
 using System.Text;
+using System.Text.Json;
 
 namespace URLUtil
 {
     public class Program
     {
+        private static readonly JsonSerializerOptions options1 = new() { WriteIndented = true };
+        private static readonly JsonSerializerOptions options2 = new() { WriteIndented = false };
         static public void Main(string[] args)
         {
-            var tmp1 = "https://www.google.com/search?q=it's secret to efveroyne&oq=it's secret to efveroyne&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQLhhA0gEIMjE5MmowajGoAgCwAgA&sourceid=chrome&ie=UTF-8#fpr=r";
-            var tmp2 = "https://www.google.com/search?q=it%27s+secret+to+efveroyne&oq=it%27s+secret+to+efveroyne&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQLhhA0gEIMjE5MmowajGoAgCwAgA&sourceid=chrome&ie=UTF-8#fpr=r";
-            args = ["-x", "-i", tmp2];
             RegisterArg();
 
             try
@@ -38,7 +38,11 @@ namespace URLUtil
                 Console.WriteLine(Generator.GenerateHelp());
                 return;
             }
-            if (!Arguments.IsArgumentSet("encode") && !Arguments.IsArgumentSet("decode") && !Arguments.IsArgumentSet("info"))
+            int json = 0;
+            if (Arguments.IsArgumentSet("infoj")) json = 1;
+            if (Arguments.IsArgumentSet("infojm")) json = 2;
+            bool info = Arguments.IsArgumentSet("info") || (json > 0);
+            if (!Arguments.IsArgumentSet("encode") && !Arguments.IsArgumentSet("decode") && !info)
             {
                 Console.Error.WriteLine("Either -e, -d or -x is required");
                 Console.WriteLine(Generator.GenerateHelp());
@@ -79,6 +83,7 @@ namespace URLUtil
                 }
             }
 
+
             if (Arguments.IsArgumentSet("encode"))
             {
                 byte[] inputData;
@@ -93,17 +98,17 @@ namespace URLUtil
                 var output = Encode(inputData);
                 if (Arguments.IsArgumentSet("outputfile"))
                 {
-                    if (Arguments.IsArgumentSet("info"))
+                    if (info)
                     {
-                        output = Encoding.UTF8.GetBytes(GetInfo(Encoding.UTF8.GetString(output)));
+                        output = Encoding.UTF8.GetBytes(GetInfo(Encoding.UTF8.GetString(output), json));
                     }
                     WriteToFile(output);
                 }
                 else
                 {
-                    if (Arguments.IsArgumentSet("info"))
+                    if (info || Arguments.IsArgumentSet("infoj"))
                     {
-                        Console.WriteLine(GetInfo(Encoding.UTF8.GetString(output)));
+                        Console.WriteLine(GetInfo(Encoding.UTF8.GetString(output), json));
                     }
                     else
                     {
@@ -123,17 +128,17 @@ namespace URLUtil
                     var output = Decode(inputdata);
                     if (Arguments.IsArgumentSet("outputfile"))
                     {
-                        if (Arguments.IsArgumentSet("info"))
+                        if (info)
                         {
-                            output = Encoding.UTF8.GetBytes(GetInfo(Encoding.UTF8.GetString(output)));
+                            output = Encoding.UTF8.GetBytes(GetInfo(Encoding.UTF8.GetString(output), json));
                         }
                         WriteToFile(output);
                     }
                     else
                     {
-                        if (Arguments.IsArgumentSet("info"))
+                        if (info)
                         {
-                            Console.WriteLine(GetInfo(Encoding.UTF8.GetString(output)));
+                            Console.WriteLine(GetInfo(Encoding.UTF8.GetString(output), json));
                         }
                         else
                         {
@@ -158,17 +163,17 @@ namespace URLUtil
                     var output = inputdata;
                     if (Arguments.IsArgumentSet("outputfile"))
                     {
-                        if (Arguments.IsArgumentSet("info"))
+                        if (info)
                         {
-                            output = Encoding.UTF8.GetBytes(GetInfo(Encoding.UTF8.GetString(output)));
+                            output = Encoding.UTF8.GetBytes(GetInfo(Encoding.UTF8.GetString(output), json));
                         }
                         WriteToFile(output);
                     }
                     else
                     {
-                        if (Arguments.IsArgumentSet("info"))
+                        if (info)
                         {
-                            Console.WriteLine(GetInfo(Encoding.UTF8.GetString(output)));
+                            Console.WriteLine(GetInfo(Encoding.UTF8.GetString(output), json));
                         }
                         else
                         {
@@ -198,33 +203,64 @@ namespace URLUtil
             File.WriteAllBytes(path, data);
         }
 
-        private static string GetInfo(string address)
+        private static string GetInfo(string address, int json)
         {
-            var builder = new StringBuilder();
             var uri = new Uri(address);
             var scheme = uri.Scheme;
             var host = uri.Host;
             var port = uri.Port;
+            var fragment = uri.Fragment;
+            var path = uri.AbsolutePath;
             var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
-            builder.AppendLine($"Scheme: {scheme}");
-            builder.AppendLine($"Host: {host}");
-            builder.AppendLine($"Port: {port}");
-            builder.AppendLine($"Path: {uri.AbsolutePath}");
-            builder.AppendLine($"Fragment: {uri.Fragment}");
-            builder.AppendLine($"Queries:");
-            foreach (var key in query.Keys)
+            if (json == 0)
             {
-                if (key is not string keyStr) continue;
-                if (query[keyStr] is not string value)
+                var builder = new StringBuilder();
+                builder.AppendLine($"FullUrl: {address}");
+                builder.AppendLine($"Scheme: {scheme}");
+                builder.AppendLine($"Host: {host}");
+                builder.AppendLine($"Port: {port}");
+                builder.AppendLine($"Path: {path}");
+                builder.AppendLine($"Fragment: {fragment}");
+                builder.AppendLine($"Queries:");
+                foreach (var key in query.Keys)
                 {
-                    builder.AppendLine("\t" + keyStr);
+                    if (key is not string keyStr) continue;
+                    if (query[keyStr] is not string value)
+                    {
+                        builder.AppendLine("\t" + keyStr);
+                    }
+                    else
+                    {
+                        builder.AppendLine($"\t{keyStr}: {value}");
+                    }
                 }
-                else
-                {
-                    builder.AppendLine($"\t{keyStr}: {value}");
-                }
+                return builder.ToString();
             }
-            return builder.ToString();
+            else
+            {
+                UriInfo info = new()
+                {
+                    FullUrl = address,
+                    Scheme = scheme,
+                    Host = host,
+                    Port = port.ToString(),
+                    Path = path,
+                    Fragment = fragment
+                };
+                foreach (var key in query.Keys)
+                {
+                    if (key is not string keyStr) continue;
+                    if (query[keyStr] is not string value)
+                    {
+                        info.Queries.Add(keyStr, "");
+                    }
+                    else
+                    {
+                        info.Queries.Add(keyStr, value);
+                    }
+                }
+                return System.Text.Json.JsonSerializer.Serialize(info, ((json == 1) ? options1 : options2));
+            }
         }
 
         private static byte[] Encode(byte[] data)
@@ -248,6 +284,8 @@ namespace URLUtil
             Arguments.RegisterArgument("decode", new ArgumentDefinition(ArgumentType.Flag, "decode", "d", "Decode the URL"));
             Arguments.RegisterArgument("multiline", new ArgumentDefinition(ArgumentType.Flag, "multiline", "m", "Allow Multiline input when input is not specifed as parameter"));
             Arguments.RegisterArgument("info", new ArgumentDefinition(ArgumentType.Flag, "extract", "x", "Extracts information from URL"));
+            Arguments.RegisterArgument("infoj", new ArgumentDefinition(ArgumentType.Flag, "json", "j", "Extracts information from URL and format it as json"));
+            Arguments.RegisterArgument("infojm", new ArgumentDefinition(ArgumentType.Flag, "compactjson", "cj", "Extracts information from URL and format it as compact json"));
             Arguments.RegisterArgument("input", new ArgumentDefinition(ArgumentType.String, "input", "i", "String to encode or decode", "Input Text"));
             Arguments.RegisterArgument("inputfile", new ArgumentDefinition(ArgumentType.String, "inputfile", "if", "Selects input file (cannot be used with -i)", "File Name"));
             Arguments.RegisterArgument("outputfile", new ArgumentDefinition(ArgumentType.String, "outputfile", "of", "Selects Output File", "File Name"));
