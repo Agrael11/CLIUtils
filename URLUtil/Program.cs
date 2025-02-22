@@ -3,9 +3,9 @@ using System.Text;
 
 namespace URLUtil
 {
-    internal class Program
+    public class Program
     {
-        static void Main(string[] args)
+        static public void Main(string[] args)
         {
             RegisterArg();
 
@@ -147,9 +147,9 @@ namespace URLUtil
         static void RegisterArg()
         {
             Config.FullName = "URLUtiil";
-            Config.Version = "0.1.0";
+            Config.Version = "0.2.1";
             Config.License = "Copyright (C) 2025 Oliver Neuschl\r\nThis software uses GPL 3.0 License";
-            Config.HelpHeader = "Base64 Encoder/Decoder";
+            Config.HelpHeader = "URL Encoder/Decoder";
             Arguments.RegisterArgument("encode", new ArgumentDefinition(ArgumentType.Flag, "encode", "e", "Encode the URL"));
             Arguments.RegisterArgument("decode", new ArgumentDefinition(ArgumentType.Flag, "decode", "d", "Decode the URL"));
             Arguments.RegisterArgument("multiline", new ArgumentDefinition(ArgumentType.Flag, "multiline", "m", "Allow Multiline input when input is not specifed as parameter"));

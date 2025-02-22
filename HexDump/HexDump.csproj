@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CLI-Helper\CLI-Helper\CLI-Helper.csproj" />
+    <ProjectReference Include="..\URLUtil\URLUtil.csproj" />
   </ItemGroup>
 
 </Project>

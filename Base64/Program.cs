@@ -3,9 +3,9 @@ using CLIHelper;
 
 namespace Base64
 {
-    internal class Program
+    public class Program
     {
-        static void Main(string[] args)
+        static public void Main(string[] args)
         {
             RegisterArg();
             
@@ -161,7 +161,7 @@ namespace Base64
         static void RegisterArg()
         {
             Config.FullName = "Base64";
-            Config.Version = "0.2.0";
+            Config.Version = "0.3.0";
             Config.License = "Copyright (C) 2025 Oliver Neuschl\r\nThis software uses GPL 3.0 License";
             Config.HelpHeader = "Base64 Encoder/Decoder";
             Arguments.RegisterArgument("encode", new ArgumentDefinition(ArgumentType.Flag, "encode", "e", "Encode the input"));

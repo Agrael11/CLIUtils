@@ -3,9 +3,9 @@ using System.Text;
 
 namespace HexDump
 {
-    internal class Program
+    public class Program
     {
-        static void Main(string[] args)
+        static public void Main(string[] args)
         {
             RegisterArg();
 
@@ -147,9 +147,9 @@ namespace HexDump
         static void RegisterArg()
         {
             Config.FullName = "HexDump";
-            Config.Version = "0.2.0";
+            Config.Version = "0.3.1";
             Config.License = "Copyright (C) 2025 Oliver Neuschl\r\nThis software uses GPL 3.0 License";
-            Config.HelpHeader = "Hex Dump Utility";
+            Config.HelpHeader = "Hex Dumping Utility";
             Arguments.RegisterArgument("fullview", new ArgumentDefinition(ArgumentType.Flag, "full", "f", "Show full view of hex dump (Default for normal operation)"));
             Arguments.RegisterArgument("compact", new ArgumentDefinition(ArgumentType.Flag, "compact", "c", "Show compact view of hex dump"));
             Arguments.RegisterArgument("asciionly", new ArgumentDefinition(ArgumentType.Flag, "ascii", "a", "Show only ASCII characters (Not usable with reverse)"));
@@ -163,7 +163,7 @@ namespace HexDump
             Arguments.RegisterArgument("width", new ArgumentDefinition(ArgumentType.Integer, "width", "w", "Width of output", "Width"));
             Arguments.RegisterArgument("help", new ArgumentDefinition(ArgumentType.Flag, "help", "h", "Shows This Information"));
             Arguments.RegisterArgument("version", new ArgumentDefinition(ArgumentType.Flag, "version", "v", "Shows Version"));
-            Config.HelpExample = "-i \"Hello World\" -e -of \"output.txt\"";
+            Config.HelpExample = "-i \"Hello World\" -of \"output.txt\"";
         }
     }
 }
