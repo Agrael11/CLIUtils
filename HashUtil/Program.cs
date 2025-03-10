@@ -30,7 +30,6 @@ namespace HashUtil
 
         static public void Main(string[] args)
         {
-            args = "/check /if test.txt".Split(' ');
             RegisterArg();
 
             try
@@ -221,7 +220,7 @@ namespace HashUtil
         static void RegisterArg()
         {
             Config.FullName = "HashUtil";
-            Config.Version = "0.1.0";
+            Config.Version = "0.1.1";
             Config.License = "Copyright (C) 2025 Oliver Neuschl\r\nThis software uses GPL 3.0 License";
             Config.HelpHeader = "File Hashing & Hash Checker";
             Config.ErrorOnUnkownArguments = false;
