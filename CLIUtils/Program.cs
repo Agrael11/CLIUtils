@@ -59,7 +59,7 @@ namespace CLIUtils
         {
             Config.ErrorOnUnkownArguments = false;
             Config.FullName = "CLUtils Collection";
-            Config.Version = "1.0.0";
+            Config.Version = "1.1.0";
             Config.License = "Copyright (C) 2025 Oliver Neuschl\r\nThis software uses GPL 3.0 License";
             Config.HelpHeader = "CLI Util Collection - Collection of various CLI Utilities";
             Arguments.RegisterArgument("b64", new ArgumentDefinition(ArgumentType.Flag, "base64", "b64", "Base64 Encode/Decode"));
