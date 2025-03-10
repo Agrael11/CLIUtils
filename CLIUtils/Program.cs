@@ -43,6 +43,13 @@ namespace CLIUtils
                 HexDump.Program.Main(args);
                 return;
             }
+            if (Arguments.IsArgumentSet("hash"))
+            {
+                args = [.. Arguments.ExtraArguments];
+                Arguments.Reset();
+                HashUtil.Program.Main(args);
+                return;
+            }
 
             Console.WriteLine(Generator.GenerateHelp());
             Console.WriteLine(Generator.GenerateVersion());
@@ -58,6 +65,7 @@ namespace CLIUtils
             Arguments.RegisterArgument("b64", new ArgumentDefinition(ArgumentType.Flag, "base64", "b64", "Base64 Encode/Decode"));
             Arguments.RegisterArgument("url", new ArgumentDefinition(ArgumentType.Flag, "urlutil", "url", "URL Encode/Decode"));
             Arguments.RegisterArgument("hex", new ArgumentDefinition(ArgumentType.Flag, "hexdump", "hex", "Hex Encode/Decode"));
+            Arguments.RegisterArgument("hash", new ArgumentDefinition(ArgumentType.Flag, "hashutil", "hash", "Hashing/Hash Checking"));
         }
     }
 }
